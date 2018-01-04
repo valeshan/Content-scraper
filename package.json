@@ -11,5 +11,12 @@
     "url": "github.com/valeshan/Content-scraper"
   },
   "author": "Valeshan",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "fs": "0.0.1-security",
+    "request": "^2.83.0",
+    "website-scraper": "^3.3.2",
+    "x-ray": "^2.3.2"
+  }
 }
