@@ -13,8 +13,10 @@
   "author": "Valeshan",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "^3.5.1",
     "fs": "0.0.1-security",
     "json2csv": "^3.11.5",
+    "promise": "^8.0.1",
     "website-scraper": "^3.3.2",
     "x-ray": "^2.3.2"
   }
