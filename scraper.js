@@ -1,20 +1,33 @@
+//************ VARIABLES (INCL. REQUIREMENTS & DATE) ************//
+
+//scraper module and shirts json file containing scraped data
 const scrape = require('website-scraper');
-const http = require('http');
 
+//fs
+const fs = require('fs');
 
-const request = require('request');
-const cheerio = require('cheerio');
-let urls = [];
-
-
-
+//x-ray module
 const xray = require('x-ray');
 const x = xray();
 
-const fs = require('fs');
+
+
+//csv module that converts json to csv
+const json2csv = require('json2csv');
+//column titles for csv
+const fields = ['Title', 'Price', 'ImgURL', 'URL'];
 
 
 
+//date for naming csv
+const day = new Date().getDate();
+const month = (new Date().getMonth()) + 1;
+const year = new Date().getFullYear();
+const date = `${year}-${month}-${day}`;
+
+//************ DATA FOLDER ************//
+
+//checks to see if data folder exists, if it doesn't exist, then data folder is created
 function checkData(){
   const fs = require('fs');
   const dataFolder = './data';
@@ -26,45 +39,30 @@ function checkData(){
 
 checkData();
 
-
-// request('http://www.shirts4mike.com/shirts.php', function(err, resp, body){
-//   if(!err && resp.statusCode === 200){
-//     const $ = cheerio.load(body);
-//     $('li a', '.products').each(function(){
-//       const url = $(this).attr('href');
-//       urls.push(url);
-//     });
-//     console.log(urls);
-//   }
-// })
-
-// const options = {
-//   method: "GET",
-//   jar: true,
-//   headers:
-// }
+//************ SCRAPER & CRAWLER ************//
 
 
-//xray scrape from shirts site
+//scrapes data from site, other than URL, rest of options crawl to obtain values
+// options are then written to shirts.json
 
-//initially scrapes urls for each shirt
 x('http://www.shirts4mike.com/shirts.php', '.products li', [{
-  url : 'a@href',
-}])(function(error, results){
+   URL : 'a@href',
+   ImgURL: x('a@href', 'img@src'),
+   Price: x('a@href', '.price'),
+   Title: x('a@href', '.shirt-details h1'),
+ }]).write('shirts.json');
 
-  // for each of the items scraped, which would just contain the url, we use that to scrape again
-  results.forEach(function(result, index){
-    x(result.url, '.section', [{
-      //inside each of the shirt urls we can get the price, img and details
-      price: '.price',
-      img: 'img@src',
-      title: '.shirt-details h1'
-    }])(function(error, results){
-      //another forEach method to return each result object
-      jsonFile = [];
-      results.forEach(function(result, index){
-        jsonFile.push(result);
-      }).write('results.json')
-    })
-  });
-})
+ const shirts = require('./shirts.json');
+
+
+ //************ CSV ************//
+
+
+//csv taking data from shirts.json and using fields to set columns
+ let csv = json2csv({ data: shirts, fields: fields });
+
+//writing csv file, using date as name for csv, and checking for error
+ fs.writeFile('data/'+ date +'.csv', csv, function(err) {
+   if (err) throw err;
+   console.log('file saved');
+ });
