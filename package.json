@@ -4,7 +4,8 @@
   "description": "content scraper treehouse",
   "main": "scraper.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node scraper.js"
   },
   "repository": {
     "type": "git",
@@ -13,13 +14,10 @@
   "author": "Valeshan",
   "license": "MIT",
   "dependencies": {
-    "bluebird": "^3.5.1",
-    "cheerio": "^1.0.0-rc.2",
     "fs": "0.0.1-security",
+    "http": "0.0.0",
     "json2csv": "^3.11.5",
-    "promise": "^8.0.1",
     "request": "^2.83.0",
-    "website-scraper": "^3.3.2",
     "x-ray": "^2.3.2"
   }
 }
