@@ -15,9 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "fs": "0.0.1-security",
-    "http": "0.0.0",
     "json2csv": "^3.11.5",
-    "request": "^2.83.0",
     "x-ray": "^2.3.2"
   }
 }

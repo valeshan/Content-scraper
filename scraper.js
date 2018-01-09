@@ -5,23 +5,14 @@
 //fs
 const fs = require('fs');
 
-//http
-const http = require('http');
-
-//request
-const request = require('request');
-
 //x-ray module
 const xray = require('x-ray');
 const x = xray();
-
 
 //csv module that converts json to csv
 const json2csv = require('json2csv');
 //column titles for csv
 const fields = ['Title', 'Price', 'ImgURL', 'URL', 'Time'];
-
-
 
 //date for naming csv
 const day = new Date().getDate();
@@ -45,6 +36,16 @@ function checkData(){
 }
 
 checkData();
+
+
+//************ ERROR ************//
+
+function generalErr(){
+  const genError = new Date() + " There's been an error. " + err.code + " \r\n";
+  console.log(genError);
+  fs.appendFileSync('./scraper-error.log', genError);
+}
+
 
 //************ SCRAPER & CRAWLER ************//
 
@@ -70,16 +71,20 @@ function scraper(){
 
       //writing csv file, using date as name for csv, and checking for error
       fs.writeFile('data/'+ date +'.csv', csv, function(err) {
-        if (err) throw err;
+        if (err) {
+          generalErr();
+        };
         console.log('file saved');
       });
-      } else{
-        console.log(err.message)
+    } else{
+        if(err.code ==  'ENOENT'){
+          const notFound = new Date() + " There's been a 404 error. Cannot connect to http://shirts4mike.com. " + err.code + " \r\n";
+          console.log(notFound);
+          fs.appendFileSync('./scraper-error.log', notFound);
+        }
+        else{
+          generalErr();
+        }
       }
-    });
-}
-
-
-http.request("http://www.shirts4mike.com/shirts.php").on('error', function(error){
-  console.error(error.message);
-})
+    })
+  };
