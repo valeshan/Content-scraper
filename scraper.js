@@ -40,7 +40,7 @@ checkData();
 
 //************ ERROR ************//
 
-function generalErr(){
+function generalErr(err){
   const genError = new Date() + " There's been an error. " + err.code + " \r\n";
   console.log(genError);
   fs.appendFileSync('./scraper-error.log', genError);
