@@ -72,7 +72,7 @@ function scraper(){
       //writing csv file, using date as name for csv, and checking for error
       fs.writeFile('data/'+ date +'.csv', csv, function(err) {
         if (err) {
-          generalErr();
+          generalErr(err);
         };
         console.log('file saved');
       });
@@ -83,7 +83,7 @@ function scraper(){
           fs.appendFileSync('./scraper-error.log', notFound);
         }
         else{
-          generalErr();
+          generalErr(err);
         }
       }
     })
